@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot UI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #chat-container {
+            width: 400px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        #messages {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+        .message {
+            margin: 10px 0;
+        }
+        .user-message {
+            text-align: right;
+        }
+        .bot-message {
+            text-align: left;
+        }
+        #loader {
+            display: none;
+            text-align: center;
+        }
+        #typing-indicator {
+            display: none;
+            text-align: left;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="messages"></div>
+        <div id="loader">Loading...</div>
+        <div id="typing-indicator">Bot is typing...</div>
+        <input type="text" id="user-input" placeholder="Type your message here..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <script>
+        async function sendMessage() {
+            const userInput = document.getElementById('user-input');
+            const messages = document.getElementById('messages');
+            const loader = document.getElementById('loader');
+            const typingIndicator = document.getElementById('typing-indicator');
+
+            if (userInput.value.trim() === '') return;
+
+            // Display user message
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'message user-message';
+            userMessageDiv.innerText = userInput.value;
+            messages.appendChild(userMessageDiv);
+
+            // Clear input
+            userInput.value = '';
+
+            // Display loader
+            loader.style.display = 'block';
+
+            // Simulate typing indicator
+            setTimeout(() => {
+                loader.style.display = 'none';
+                typingIndicator.style.display = 'block';
+            }, 500);
+
+            // Call API
+            const response = await fetch('http://127.0.0.1:5000/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ query: userMessageDiv.innerText }),
+            });
+
+            // Hide typing indicator
+            typingIndicator.style.display = 'none';
+
+            // Get bot response
+            const responseData = await response.json();
+
+            // Display bot message
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.className = 'message bot-message';
+            botMessageDiv.innerText = responseData.answer;
+            messages.appendChild(botMessageDiv);
+
+            // Scroll to bottom
+            messages.scrollTop = messages.scrollHeight;
+        }
+    </script>
+</body>
+</html>
