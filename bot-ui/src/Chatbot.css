@@ -1,0 +1,50 @@
+/* src/Chatbot.css */
+.messages-container {
+    height: 300px;
+    overflow-y: auto;
+    margin: 16px 64px;
+    border-radius: 10px;
+  }
+  
+  .message {
+    margin: 10px 0;
+  }
+  
+  .user-message {
+    text-align: right;
+    /* color: #c9190b; */
+  }
+  
+  .bot-message {
+    text-align: left;
+    color: #6a6e73;
+  }
+  
+  .typing-indicator {
+    text-align: left;
+    font-style: italic;
+  }
+
+  .chat-panel {
+    height: 100%;
+    width: 100%;
+  }
+
+  .chat-input {
+    margin: 16px 68px;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    font-weight: 500;
+  }
+
+  .skeleton {
+    margin-top: 8px;
+  }
+
+  .trial-title {
+    text-align: center;
+    padding-bottom: 16px;
+    font-family: "Red Hat Display";
+  }
+  
